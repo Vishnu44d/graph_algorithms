@@ -243,6 +243,7 @@ void print_all_param(int n)
         
         printf("\n");
     }
+    
 }
 
 void example1()
