@@ -117,6 +117,7 @@ void dfs_visit(nodes *graph[], int u)
             if(color[v] == 0)
             {
                 pi[v] = u;
+                printf("[%d] ~> [%d]\n", u, v);
                 dfs_visit(&*graph, v);
             }
             //getchar();
@@ -142,7 +143,11 @@ void dfs(nodes *graph[], int n)
     for(u=0;u<n;u++)
     {
         if(color[u] == 0)
+        {
+            printf("[[%d]]\n", u);
             dfs_visit(&*graph, u);
+        }
+            
     }
 }
 
@@ -186,12 +191,16 @@ void Tdfs(nodes *graph[], int n)
     //qsort(f, n, sizeof(int), cmpfunc);
     for(i=0;i<n;i++)
         printf("%d\t", gg[i]);
-
+    printf("\n");
     for(i=0;i<n;i++)
     {
         u = gg[i];
         if(color[u] == 0)
+        {
+            printf("[[%d]]\n", u);
             dfs_visit(&*graph, u);
+        }
+            
     }
 }
 
@@ -234,16 +243,32 @@ void test(int n)
 
 }
 
-
-
-int main(void)
+void examples()
 {
+    int n = 8;
     nodes *graph[MAX];
     nodes *Tgraph[MAX];
-    int n = 6;
-    int norm_d[MAX], norm_pi[MAX], norm_color[MAX], norm_f[MAX];
-    int trans_d[MAX], trans_pi[MAX], trans_color[MAX], trans_f[MAX];
 
+
+    //Example--1
+    create_graph(&*graph, n);
+    add_edge(&*graph, 0,1);
+    add_edge(&*graph, 1,2);
+    add_edge(&*graph, 1,6);
+    add_edge(&*graph, 1,7);
+    add_edge(&*graph, 2,3);
+    add_edge(&*graph, 2,5);
+    add_edge(&*graph, 3,2);
+    add_edge(&*graph, 3,4);
+    add_edge(&*graph, 4,4);
+    add_edge(&*graph, 5,4);
+    add_edge(&*graph, 5,6);
+    add_edge(&*graph, 6,5);
+    add_edge(&*graph, 7,6);
+    add_edge(&*graph, 7,0);
+
+
+    //EXAMPLE--2
     create_graph(&*graph, n);
     add_edge(&*graph, 0,1);
     add_edge(&*graph, 0,3);
@@ -253,14 +278,48 @@ int main(void)
     add_edge(&*graph, 4,2);
     add_edge(&*graph, 4,5);
     add_edge(&*graph, 5,5);
-    printf("\n\n -----------ORIGINAL GRAPH---------");
-    print_graph(&*graph, n);
+
+
+    
+}
+
+int main(void)
+{
+    nodes *graph[MAX];
+    nodes *Tgraph[MAX];
+    int norm_d[MAX], norm_pi[MAX], norm_color[MAX], norm_f[MAX];
+    int trans_d[MAX], trans_pi[MAX], trans_color[MAX], trans_f[MAX];
+
+
+    //Pase your example here:: BEGIN---
+
+    int n = 8;
+    create_graph(&*graph, n);
+    add_edge(&*graph, 0,1);
+    add_edge(&*graph, 1,2);
+    add_edge(&*graph, 1,6);
+    add_edge(&*graph, 1,7);
+    add_edge(&*graph, 2,3);
+    add_edge(&*graph, 2,5);
+    add_edge(&*graph, 3,2);
+    add_edge(&*graph, 3,4);
+    add_edge(&*graph, 4,4);
+    add_edge(&*graph, 5,4);
+    add_edge(&*graph, 5,6);
+    add_edge(&*graph, 6,5);
+    add_edge(&*graph, 7,6);
+    add_edge(&*graph, 7,0);
+
+    //--- END --
+    
+    //printf("\n\n -----------ORIGINAL GRAPH---------");
+    //print_graph(&*graph, n);
     transpose(&*graph, n, *&Tgraph);
-    printf("\n\n -----------TRANSPOSE GRAPH---------");
-    print_graph(*&Tgraph, n);
+    //printf("\n\n -----------TRANSPOSE GRAPH---------");
+    //print_graph(*&Tgraph, n);
     
     dfs(&*graph, n);
-    print_all_param(n);
+    //print_all_param(n);
 
     int i;
     for(i=0;i<n;i++)
@@ -274,7 +333,7 @@ int main(void)
     //test(n);
     
     Tdfs(&*Tgraph, n);
-    print_all_param(n);
+    //print_all_param(n);
 
     for(i=0;i<n;i++)
     {
@@ -283,5 +342,14 @@ int main(void)
         trans_pi[i] = pi[i];
         trans_color[i] = color[i];
     }
+
+    int p, count = 0;
+    for(p=0;p<n;p++)
+    {
+        if(pi[p] == -1)
+            count += 1;
+
+    }
+    printf("\nNUmber of strongly connected component is %d\n", count);
     return 1;
 }
