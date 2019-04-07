@@ -1,6 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 #define MAX 20
+#define WHITE 0
+#define GRAY 1
+#define BLACK 2
+
+
 typedef struct node
 {
     /* data */
@@ -15,7 +21,7 @@ void create_graph(nodes *graph[], int n)
     {
         graph[i] = NULL;
     }
-    printf("Graph created of %i vertex.\n", i);
+    printf("Graph created of %d vertex.\n", i);
 }
 
 void add_edge(nodes *graph[], int u, int v)
@@ -102,7 +108,7 @@ int pi[MAX];
 int f[MAX];
 void dfs_visit(nodes *graph[], int u)
 {
-    color[u] = 1;
+    color[u] = GRAY;
     t = t + 1;
     d[u] = t;
     if(graph[u] != NULL)
@@ -114,7 +120,7 @@ void dfs_visit(nodes *graph[], int u)
             int v = curr->val;
             //printf("\nDEBUG: from %d to %d\n", u, v); 
             //printf("\nDEBUG: color[%d]\n", color[u]);
-            if(color[v] == 0)
+            if(color[v] == WHITE)
             {
                 pi[v] = u;
                 printf("[%d] ~> [%d]\n", u, v);
@@ -124,7 +130,7 @@ void dfs_visit(nodes *graph[], int u)
             curr = curr -> next;
             //getchar();
         }
-        color[u] = 2;
+        color[u] = BLACK;
         t = t + 1;
         f[u] = t;
 
@@ -136,13 +142,13 @@ void dfs(nodes *graph[], int n)
     int u;
     for(u=0;u<n;u++)
     {
-        color[u] = 0;
+        color[u] = WHITE;
         pi[u] = -1;
     }
     t = 0;
     for(u=0;u<n;u++)
     {
-        if(color[u] == 0)
+        if(color[u] == WHITE)
         {
             printf("[[%d]]\n", u);
             dfs_visit(&*graph, u);
@@ -249,7 +255,6 @@ void examples()
     nodes *graph[MAX];
     nodes *Tgraph[MAX];
 
-
     //Example--1
     create_graph(&*graph, n);
     add_edge(&*graph, 0,1);
@@ -267,7 +272,6 @@ void examples()
     add_edge(&*graph, 7,6);
     add_edge(&*graph, 7,0);
 
-
     //EXAMPLE--2
     create_graph(&*graph, n);
     add_edge(&*graph, 0,1);
@@ -279,8 +283,6 @@ void examples()
     add_edge(&*graph, 4,5);
     add_edge(&*graph, 5,5);
 
-
-    
 }
 
 int main(void)
