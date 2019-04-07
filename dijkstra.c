@@ -268,21 +268,6 @@ void example1()
 
 int main(void)
 {
-    /*
-    node *Q = NULL; 
-    enqueue(&Q, 5, 5);
-    enqueue(&Q, 0, 10);
-    enqueue(&Q, 1, 40);
-    enqueue(&Q, 2, 20);
-    enqueue(&Q, 3, 60);
-    enqueue(&Q, 4, 30);
-    enqueue(&Q, 5, 8);
-    
-    //enqueue(&Q, 5, 7);
-    see_queue(Q);
-    dequeue_min(&Q);
-    see_queue(Q);
-    */
     example1();
     return 1;
 }
