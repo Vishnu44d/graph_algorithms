@@ -212,11 +212,11 @@ void dijkstra(int (*graph)[MAX], int n, int s)
     {
         u = dequeue_min(&Q);
         int *adj = (int *)malloc(sizeof(int));
-        int s;
-        get_adj(graph, n, u, adj, &s);
+        int s_;
+        get_adj(graph, n, u, adj, &s_);
 
         int i;
-        for(i=0;i<s;i++)
+        for(i=0;i<s_;i++)
         {
             int v = adj[i];
             if(d[v] > d[u] + graph[u][v])
