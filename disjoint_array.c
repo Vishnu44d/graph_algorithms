@@ -56,16 +56,34 @@ int main(void)
     make_union(p, 4, 5);
     make_union(p, 6, 7);
     make_union(p, 0, 6);
-    make_union(p, 5, 6);
-    make_union(p, 0, 6);
+    //make_union(p, 5, 6);
+    //make_union(p, 0, 6);
     int i;
-    //printf("%d\n", n);
+    printf("BEFORE PATH COMPRESSION\n");
     for(i=0;i<n;i++)
     {
         //printf("%d\n", i);
         printf("%d\t", p[i]);
     }
-        
+    printf("\n");
+
+    // -- Compressing path BEGIN --
+    int kl = 0;
+    for(;kl<n;kl++)
+    {
+        int pkl = find_set(p, kl);
+        //printf("representator of %d is %d\n", kl, pkl);
+        if(p[kl] != -1)
+            p[kl] = pkl;
+    }
+    // -- Compressing path END --
+
+    printf("AFTER PATH COMPRESSION\n");
+    for(i=0;i<n;i++)
+    {
+        //printf("%d\n", i);
+        printf("%d\t", p[i]);
+    } 
     printf("\n");
     return 1;
 }
