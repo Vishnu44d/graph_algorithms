@@ -27,5 +27,6 @@ int main(void)
     int *x, *y;
     int a = 15, b=10;
     int d = extended_euclid(a, b, x, y);
+    
     printf("%d = %d * %d + %d * %d\n", d, a, *x, b, *y);
 }
