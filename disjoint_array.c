@@ -46,6 +46,7 @@ void make_union(int *p, int u, int v)
     } 
 }
 
+
 int main(void)
 {
     int n=8, p[MAX];
