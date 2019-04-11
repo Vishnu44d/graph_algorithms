@@ -252,23 +252,47 @@ void mst_prims(int (*graph)[MAX], int n, int s)
         for(i=0;i<s_;i++)
         {
             int v = adj[i];
-            printf("%d\n", v);
-            printf("isPresent = %d and graph[%d][%d] = %d and d[%d] = %d\n", isPresent(Q, v), u, v, graph[u][v], v, d[v]);
-            if(graph[u][v] < d[v])
+            //printf("%d\n", v);
+            //printf("isPresent = %d and graph[%d][%d] = %d and d[%d] = %d\n", isPresent(Q, v), u, v, graph[u][v], v, d[v]);
+            if(graph[u][v] < d[v] && u<v)
             {
+                //printf("DEBUG:: (%d, %d)\n", u, v);
                 pi[v] = u;
                 d[v] = graph[u][v];
                 enqueue(&Q, v, graph[u][v]);
                 //see_queue(Q);
-            }
-            
-            
+            }   
         }
-        
-
     }
-
 }
+
+
+void pre_order(int n, int r)
+{
+    printf("[[%d]]\n", r);
+    int left, right;
+    int i, j=0, k;
+    int childs[MAX];
+    for(i=0; i<n; i++)
+    {
+        if(r == pi[i])
+        {
+            childs[j] = i;
+            j++;
+        }
+    }
+    for(k=0;k<j;k++)
+    {
+        printf("childs = %d\t", childs[k]);
+    }
+    printf("\n");
+    for(i=0;i<j;i++)
+    {
+        pre_order(n, childs[i]);
+    }
+}
+
+
 
 void print_all_param(int n)
 {
@@ -297,6 +321,18 @@ void test_Q()
     
     see_queue(Q);
 
+}
+
+void test_preorder()
+{
+    pi[0] = -1;
+    pi[1] = 0;
+    pi[2] = 0;
+    pi[3] = 2;
+    pi[4] = 2;
+    pi[5] = 3;
+    pi[6] = 3;
+    pre_order(7, 0);
 }
 
 void example()
@@ -332,10 +368,12 @@ void example()
     print_graph(graph, n);
     mst_prims(graph, n, 0);
     print_all_param(n);
+    pre_order(n, 0);
 }
 
 void main(void)
 {
     example();
+    //test_preorder();
     //test_Q();
 }

@@ -2,233 +2,182 @@
 #include<stdlib.h>
 
 #define MAX 20
-#define INFINITY 999999
-#define True 1
-#define False 0
+#define WHITE 0
+#define GRAY 1
+#define BLACK 2
 
-// DEINATION of GRAPH (Adj. Matrix) :: BEGIN --
-void create_graph(int (*graph)[MAX], int n)
-{
-    int i, j;
-    for(i=0; i<n; i++)
-    {
-        for(j=0; j<n; j++)
-            graph[i][j] = INFINITY;
-    }
-    printf("GRAPH created with number of Vertex: %d\n", n);
-}
 
-void add_edge(int (*graph)[MAX], int u, int v, int w)
+typedef struct node
 {
-    graph[u][v] = w;
-    printf("Edge Added %d ~ %d with weight = %d\n", u, v, w);
-}
+    /* data */
+    int val;
+    struct node *next;
+}nodes;
 
-void del_edge(int (*graph)[MAX], int u, int v)
+void create_graph(nodes *graph[], int n)
 {
-    graph[u][v] = INFINITY;
-    printf("Edge Deleted %d ~ %d \n", u, v);
-}
-
-void get_adj(int (*graph)[MAX], int n, int u, int *adj, int *size)
-{
-    //size is the number of vertex adjecent to `u`
-    int i, j=0;
+    int i;
     for(i=0;i<n;i++)
     {
-        if(graph[u][i] != INFINITY)
+        graph[i] = NULL;
+    }
+    printf("Graph created of %d vertex.\n", i);
+}
+
+void add_edge(nodes *graph[], int u, int v)
+{
+    nodes *new_node = (nodes *)malloc(sizeof(nodes));
+    new_node->next = NULL;
+    new_node->val = v;
+
+    if(graph[u] == NULL)
+    {
+        graph[u] = new_node;
+    }
+    else
+    {
+        nodes *curr = graph[u];
+        while(curr->next != NULL)
+            curr = curr -> next;
+        curr->next = new_node;
+
+    }
+    printf("\nEdge added %d ~> %d.", u, v);
+    //add_edge(&*graph, v, u);   
+}
+
+
+void print_graph(nodes *graph[], int n)
+{
+    int i;
+
+    for(i=0;i<n;i++)
+    {
+        printf("\n%d. ", i);
+        if(graph[i] == NULL)
         {
-            adj[j] = i;
-            j++;
+            printf("NULL");
+        }
+        else
+        {
+            nodes *curr = graph[i];
+            while(curr != NULL)
+            {
+                printf("[%d]-> ", curr->val); 
+                curr = curr -> next;
+            }
+            printf("NULL");      
+        }
+        //printf("\n");
+        
+    }
+}
+
+/* 
+white 0
+grey  1
+black 2
+*/
+
+int color[MAX];
+int t;
+int d[MAX];
+int pi[MAX];
+int f[MAX];
+void dfs_visit(nodes *graph[], int u)
+{
+    color[u] = GRAY;
+    t = t + 1;
+    d[u] = t;
+    if(graph[u] != NULL)
+    {
+        nodes *curr = graph[u];
+        while(curr != NULL)
+        {
+            int v = curr->val;
+            if(color[v] == WHITE)
+            {
+                pi[v] = u;
+                printf("[%d] ~> [%d]\n", u, v);
+                dfs_visit(&*graph, v);
+            }
+            curr = curr -> next;
+        }
+        color[u] = BLACK;
+        t = t + 1;
+        f[u] = t;
+
+    }
+}
+
+void dfs(nodes *graph[], int n)
+{
+    int u;
+    for(u=0;u<n;u++)
+    {
+        color[u] = WHITE;
+        pi[u] = -1;
+    }
+    t = 0;
+    for(u=0;u<n;u++)
+    {
+        if(color[u] == WHITE)
+        {
+            printf("[[%d]]\n", u);
+            dfs_visit(&*graph, u);
         }
             
     }
-    *size = j;
-        
 }
 
-void print_graph(int (*graph)[MAX], int n)
+void print_all_param(int n)
 {
-    int i, j;
-    for(i=0; i<n; i++)
+    int i;
+    printf("\n");
+    for(i=0;i<n;i++)
     {
-        for(j=0; j<n; j++)
-        {
-            if(graph[i][j] == INFINITY)
-                printf("INF\t");
-            else
-                printf("%d\t",graph[i][j]);
-        }
-            
+        printf("d[%d] = %d\t", i, d[i]);
+        printf("f[%d] = %d\t", i, f[i]);
+        printf("pi[%d] = %d\t", i, pi[i]);
+        printf("color[%d] = %d\t", i, color[i]);
+        
         printf("\n");
     }
 }
 
-// DEINATION of GRAPH (Adj. Matrix) :: END --
-
-//QUEUE :: BEGIN -- 
-
-typedef struct node
-{
-    int value;
-    struct node *next;
-}node;
-
-void enqueue(node **H, int v)
-{
-    node *new_node = (node *)malloc(sizeof(node));
-    new_node->value = v;
-    new_node->next = NULL;
-    if(*H == NULL)
-        *H = new_node;
-    else
-    {
-        node *curr = *H;
-        while(curr->next != NULL)
-            curr = curr->next;
-        curr->next = new_node;
-        //printf("DEBUGG::NODE ADDED %d\n", curr->value);
-    }
-    
-}
-
-// if return -2 the empty queue
-
-int dequeue(node **H)
-{
-    if(*H == NULL)
-        return -2;
-    else
-    {
-        int v;
-        node *curr = *H;
-        v = curr->value;
-        *H = curr->next;
-        return v;
-    }   
-}
-
-int is_empty(node **H)
-{
-    if(*H == NULL)
-        return True;
-    return False;
-}
-
-void see_queue(node *H)
-{
-    if(H == NULL)
-        printf("NULL\n");
-    else
-    {
-        node *curr = H;
-        while(curr != NULL)
-        {
-            printf("[%d] -> ", curr->value);
-            curr = curr->next;
-        }
-        printf("NULL\n");
-            
-    }
-}
-
-// QUEUE :: END --
-
-
-// BFS :: BEGIN --
-
-/*
-color[u] = 0 undiscovered
-color[u] = 1 discovered
-color[u] = 2 explored
-*/
-
-int t;
-int color[MAX];
-int d[MAX];
-int pi[MAX];
- 
-void BFS(int (*graph)[MAX], int n, int s)
-{
-    int u;
-    for(u=0; u<n; u++)
-    {
-        color[u] = 0;
-        d[u] = INFINITY;
-        pi[u] = -1;
-    }
-    color[s] = 1;
-    d[s] = 0;
-    node *Q = NULL; 
-    enqueue(&Q, s);
-    while(is_empty(&Q) == False)
-    {
-        u = dequeue(&Q);
-        int *adj = (int *)malloc(sizeof(int));
-        int s;
-        get_adj(graph, n, u, adj, &s);
-
-        int i;
-        for(i=0;i<s;i++)
-        {
-            int v = adj[i];
-            if(color[v] == 0)
-            {
-                color[v] = 1;
-                d[v] = d[u] + 1;
-                pi[v] = u;
-                enqueue(&Q, v);
-                printf("[%d] ~> [%d]\n",u,v);
-            }
-        }
-        color[u] = 2;
-
-    }
-
-}
-
-//BFS :: END -- 
-
-
 int main(void)
-{   
-    int graph[MAX][MAX];
-    int n = 8;
-    create_graph(graph, n);
-    add_edge(graph, 0, 1, 1);
-    add_edge(graph, 0, 7, 2);
-    add_edge(graph, 1, 0, 1);
-    add_edge(graph, 1, 6, 1);
-    add_edge(graph, 2, 6, 2);
-    add_edge(graph, 2, 5, 4);
-    add_edge(graph, 2, 3, 3);
-    add_edge(graph, 3, 2, 3);
-    add_edge(graph, 3, 4, 2);
-    add_edge(graph, 4, 3, 2);
-    add_edge(graph, 4, 5, 3);
-    add_edge(graph, 5, 2, 4);
-    add_edge(graph, 5, 4, 3);
-    add_edge(graph, 5, 6, 2);
-    add_edge(graph, 6, 5, 2);
-    add_edge(graph, 6, 2, 2);
-    add_edge(graph, 6, 1, 1);
-    add_edge(graph, 7, 0, 2);
-    print_graph(graph, n);
+{
+    nodes *graph[MAX];
+    nodes *Tgraph[MAX];
+    int norm_d[MAX], norm_pi[MAX], norm_color[MAX], norm_f[MAX];
+    int trans_d[MAX], trans_pi[MAX], trans_color[MAX], trans_f[MAX];
 
-    BFS(graph, n, 0);
-    int p;
-    for(p=0;p<n;p++)
-        printf("(%d, %d)\t", p, pi[p]);
-    printf("\n");
-    /*
-    int *adj = (int *)malloc(sizeof(int));
-    int s;
-    get_adj(graph, n, 0, adj, &s);
-    printf("%d\n", s);
-    int i=0;
-    for(;i<s;i++)
-        printf("%d\t", adj[i]);
-    printf("\n");
-    */
+
+    //Pase your example here:: BEGIN---
+
+    int n = 8;
+    create_graph(&*graph, n);
+    add_edge(&*graph, 0,1);
+    add_edge(&*graph, 1,2);
+    add_edge(&*graph, 1,6);
+    add_edge(&*graph, 1,7);
+    add_edge(&*graph, 2,3);
+    add_edge(&*graph, 2,5);
+    add_edge(&*graph, 3,2);
+    add_edge(&*graph, 3,4);
+    add_edge(&*graph, 4,4);
+    add_edge(&*graph, 5,4);
+    add_edge(&*graph, 5,6);
+    add_edge(&*graph, 6,5);
+    add_edge(&*graph, 7,6);
+    add_edge(&*graph, 7,0);
+
+    //--- END --
+
+    print_graph(&*graph, n);
+        
+    dfs(&*graph, n);
+    print_all_param(n);
+
     return 1;
 }
