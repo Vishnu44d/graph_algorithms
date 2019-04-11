@@ -118,7 +118,7 @@ int bellman_ford(int (*graph)[MAX], int n, int s)
         pi[u] = -1;
     }
     d[s] = 0;
-    int i, j;
+    int i, j; 
 
     tuple *edges = (tuple *)malloc(sizeof(tuple));
     int size;
