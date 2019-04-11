@@ -223,8 +223,7 @@ void see_queue(node *H)
 int d[MAX];
 int pi[MAX];
 
-//DIJKASTRA --BEGIN--
-
+//Prim --BEGIN--
 
 
 int d[MAX];
