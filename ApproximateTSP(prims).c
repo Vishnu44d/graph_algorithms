@@ -291,8 +291,6 @@ void pre_order(int n, int r)
     }
 }
 
-
-
 void print_all_param(int n)
 {
     int i;
