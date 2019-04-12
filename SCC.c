@@ -251,7 +251,7 @@ void test(int n)
 
 void examples()
 {
-    int n = 8;
+    int n = 5;
     nodes *graph[MAX];
     nodes *Tgraph[MAX];
 
@@ -283,6 +283,14 @@ void examples()
     add_edge(&*graph, 4,5);
     add_edge(&*graph, 5,5);
 
+    //int n = 5;
+    create_graph(&*graph, n);
+    add_edge(&*graph, 1,0);
+    add_edge(&*graph, 0,3);
+    add_edge(&*graph, 3,4);
+    add_edge(&*graph, 0,2);
+    add_edge(&*graph, 2,1);
+
 }
 
 int main(void)
@@ -295,22 +303,13 @@ int main(void)
 
     //Pase your example here:: BEGIN---
 
-    int n = 8;
+    int n = 5;
     create_graph(&*graph, n);
-    add_edge(&*graph, 0,1);
-    add_edge(&*graph, 1,2);
-    add_edge(&*graph, 1,6);
-    add_edge(&*graph, 1,7);
-    add_edge(&*graph, 2,3);
-    add_edge(&*graph, 2,5);
-    add_edge(&*graph, 3,2);
+    add_edge(&*graph, 1,0);
+    add_edge(&*graph, 0,3);
     add_edge(&*graph, 3,4);
-    add_edge(&*graph, 4,4);
-    add_edge(&*graph, 5,4);
-    add_edge(&*graph, 5,6);
-    add_edge(&*graph, 6,5);
-    add_edge(&*graph, 7,6);
-    add_edge(&*graph, 7,0);
+    add_edge(&*graph, 0,2);
+    add_edge(&*graph, 2,1);
 
     //--- END --
     
