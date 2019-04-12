@@ -220,15 +220,6 @@ int main(void)
     for(p=0;p<n;p++)
         printf("(%d, %d)\t", p, pi[p]);
     printf("\n");
-    /*
-    int *adj = (int *)malloc(sizeof(int));
-    int s;
-    get_adj(graph, n, 0, adj, &s);
-    printf("%d\n", s);
-    int i=0;
-    for(;i<s;i++)
-        printf("%d\t", adj[i]);
-    printf("\n");
-    */
+
     return 1;
 }
