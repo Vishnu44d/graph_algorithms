@@ -1,11 +1,19 @@
 //For fully connected component graph (undirected and weighted)
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
-#define MAX 20
+#define MAX 60
 #define INFINITY 999999
 #define True 1
 #define False 0
+
+
+
+struct timespec start, end;
+
+
+
 
 // DEINATION of GRAPH (Adj. Matrix) :: BEGIN --
 void create_graph(int (*graph)[MAX], int n)
@@ -23,7 +31,7 @@ void add_edge(int (*graph)[MAX], int u, int v, int w)
 {
     graph[u][v] = w;
     graph[v][u] = w;
-    printf("Edge Added %d <~> %d with weight = %d\n", u, v, w);
+    //printf("Edge Added %d <~> %d with weight = %d\n", u, v, w);
 }
 
 void del_edge(int (*graph)[MAX], int u, int v)
@@ -262,13 +270,15 @@ void mst_prims(int (*graph)[MAX], int n, int s)
                 //see_queue(Q);
             }   
         }
+        free(adj);
     }
+    free(Q);
 }
 
 
 void pre_order(int n, int r)
 {
-    printf("[[%d]]\n", r);
+    //printf("[[%d]]\n", r);
     int left, right;
     int i, j=0, k;
     int childs[MAX];
@@ -280,11 +290,13 @@ void pre_order(int n, int r)
             j++;
         }
     }
+    /*
     for(k=0;k<j;k++)
     {
         printf("childs = %d\t", childs[k]);
     }
-    printf("\n");
+    */
+    //printf("\n");
     for(i=0;i<j;i++)
     {
         pre_order(n, childs[i]);
@@ -332,6 +344,51 @@ void test_preorder()
     pre_order(7, 0);
 }
 
+int gen_rand()
+{
+    //srand(29);
+	int max = 15;
+	int min = 2;
+    int r = rand();
+    r = r % (max - min);
+    return r + min;
+}
+
+void drive(int n)
+{
+    int graph[MAX][MAX];
+    create_graph(graph, n);
+    int i, j;
+    for(i=0; i<n; i++)
+    {
+        for(j=0; j<n; j++)
+        {
+            if(i != j)
+            add_edge(graph, i, j, gen_rand());
+        }
+    }
+
+    int *adj = (int *)malloc(sizeof(int));
+    int s_;
+    //get_adj(graph, n, 0, adj, &s_);
+    //print_graph(graph, n);
+    long long int s1, s2, e1, e2;
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+    s1 = start.tv_nsec;
+    s2 = start.tv_sec;
+        mst_prims(graph, n, 0);
+        //print_all_param(n);
+        pre_order(n, 0);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    e1 = end.tv_nsec;
+    e2 = end.tv_sec;
+    long long int t = (e1 - s1) + (e2 - s2) * 1000000000;
+    free(adj);
+    printf("\ntime taken is %lld\n", t);
+
+}
+
+
 void example()
 {
     int n = 9;
@@ -362,15 +419,24 @@ void example()
         printf("%d\t", adj[i]);
     printf("\n");
 
-    print_graph(graph, n);
+    //print_graph(graph, n);
+
+    
+
     mst_prims(graph, n, 0);
-    print_all_param(n);
+    //print_all_param(n);
     pre_order(n, 0);
+
+
+    
 }
 
 void main(void)
 {
-    example();
+    //example();
     //test_preorder();
     //test_Q();
+    int n = 5;
+    for(;n<=50;n++)
+        drive(n);
 }

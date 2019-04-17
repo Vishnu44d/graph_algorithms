@@ -42,10 +42,14 @@ void add_edge(nodes *graph[], int u, int v)
         curr->next = new_node;
 
     }
-    printf("\nEdge added %d ~> %d.", u, v);
-    //add_edge(&*graph, v, u);   
+    printf("\nEdge added %d ~> %d.", u, v); 
 }
 
+void add_undirected_edge(nodes *graph[], int u, int v)
+{
+    add_edge(&*graph, u,v);
+    add_edge(&*graph, v,u);
+}
 
 void print_graph(nodes *graph[], int n)
 {
@@ -157,20 +161,20 @@ int main(void)
 
     int n = 8;
     create_graph(&*graph, n);
-    add_edge(&*graph, 0,1);
-    add_edge(&*graph, 1,2);
-    add_edge(&*graph, 1,6);
-    add_edge(&*graph, 1,7);
-    add_edge(&*graph, 2,3);
-    add_edge(&*graph, 2,5);
-    add_edge(&*graph, 3,2);
-    add_edge(&*graph, 3,4);
-    add_edge(&*graph, 4,4);
-    add_edge(&*graph, 5,4);
-    add_edge(&*graph, 5,6);
-    add_edge(&*graph, 6,5);
-    add_edge(&*graph, 7,6);
-    add_edge(&*graph, 7,0);
+    add_undirected_edge(&*graph, 0,1);
+    add_undirected_edge(&*graph, 1,2);
+    add_undirected_edge(&*graph, 1,6);
+    add_undirected_edge(&*graph, 1,7);
+    add_undirected_edge(&*graph, 2,3);
+    add_undirected_edge(&*graph, 2,5);
+    add_undirected_edge(&*graph, 3,2);
+    add_undirected_edge(&*graph, 3,4);
+    add_undirected_edge(&*graph, 4,4);
+    add_undirected_edge(&*graph, 5,4);
+    add_undirected_edge(&*graph, 5,6);
+    add_undirected_edge(&*graph, 6,5);
+    add_undirected_edge(&*graph, 7,6);
+    add_undirected_edge(&*graph, 7,0);
 
     //--- END --
 
