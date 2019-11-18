@@ -8,3 +8,5 @@
     `
     python3 baseball_ellimination.py
     `
+- output
+    ![alt text](https://github.com/Vishnu44d/graph_algorithms/blob/master/advance/OutputScreenshot.png)
